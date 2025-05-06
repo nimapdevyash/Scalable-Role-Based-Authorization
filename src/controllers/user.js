@@ -45,7 +45,7 @@ module.exports = {
     path: "/login",
     handler: (req, res) => {
       const token = userService.logInUser(req?.body);
-      return res.status(200).cookies("accessToken", token).json({
+      return res.status(200).cookie("accessToken", token).json({
         message: "user logged in successfully",
       });
     },

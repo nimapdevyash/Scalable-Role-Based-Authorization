@@ -1,4 +1,4 @@
-const RolesPermissions = require("../modules/roles_permissions");
+const RolesPermissions = require("../models/roles_permissions");
 
 async function cheackPermission(req, res, next) {
   try {

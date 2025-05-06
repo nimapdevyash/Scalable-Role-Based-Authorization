@@ -12,7 +12,7 @@ for (let key in controllers) {
     method: controllers[key].method,
     path: controllers[key].path,
     handler: controllers[key].handler,
-    middlewares: key != "logInUser" ? [cheackAuth, cheackPermission] : [],
+    middlewares: ["logInUser" , "createUser"].includes(key) ? [] : [cheackAuth, cheackPermission] ,
   });
 }
 

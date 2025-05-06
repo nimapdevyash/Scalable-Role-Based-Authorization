@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const User = require("../modules/user");
+const model = require("../models");
 const jwt = require("./../../utils/jwt");
 
 async function createUser(data) {
@@ -7,7 +7,7 @@ async function createUser(data) {
     throw new Error("invalid credentials");
   }
 
-  const user = await User.create(data);
+  const user = await model.User.create(data);
 
   if (!user) {
     throw new Error("user creation failed");
