@@ -1,6 +1,6 @@
 const {Sequelize} = require("sequelize")
 
-const sequelize = new Sequelize({
+const sequelize =  new Sequelize({
   port : process.env.DB_PORT,
   password : process.env.DB_PASS,
   username : "postgres" ,
@@ -16,7 +16,9 @@ async function connectToDB() {
     retryCount = 0 ;
     console.log("connected to DB successfully")
   } catch (error) {
+    console.log(error)
     console.log(`retrying after ${retryCount} seconds`);
+    retryCount++ ;
     setTimeout(connectToDB , retryCount * 1000)
   }
 }

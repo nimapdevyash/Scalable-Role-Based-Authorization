@@ -11,6 +11,14 @@ const User = sequelize.define("User" , {
     validate : {
       min : 18
     }
+  },
+  password : {
+    type : DataTypes.STRING,
+    allowNull : false
+  },
+  email : {
+    type : DataTypes.STRING,
+    allowNull : false
   }
 }, {timestamps : true})
 
