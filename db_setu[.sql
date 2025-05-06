@@ -16,7 +16,7 @@ values  ('post' , 'api/' , 1 , now() , now()), -- create user
 		('get' , 'api/' , 1 , now() , now()), -- get all users
 		('put' , 'api/:userName' , 1 , now() , now()), -- update user
 		('delete' , 'api/:userName' , 1 , now() , now()), -- delete user
-		('get' , 'api/:userName' , 1 , now() , now()), -- get user by userName
+		('get' , 'api/:userName' , 1 , now() , now()); -- get user by userName
 		
 
 -- we have only two roles, Developer and Manager
@@ -32,4 +32,4 @@ values  (1 , 1 , now() , now()), -- manager can create user
 		(1 , 4 , now() , now()), -- manager can delete a user
 		(1 , 5 , now() , now()), -- manager can get a user by it's userName
 		(2 , 1 , now() , now()), -- Developer can create user
-		(2 , 3 , now() , now()), -- Developer can update a user
+		(2 , 3 , now() , now()); -- Developer can update a user
