@@ -4,3 +4,5 @@ function globalErorHanler(err , req , res , next) {
     message : err.message || "something went wrong"
   })
 }
+
+module.exports = globalErorHanler ;

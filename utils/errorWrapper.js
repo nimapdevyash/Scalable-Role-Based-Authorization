@@ -1,4 +1,1 @@
-module.exports.errorWrapper =
-  (fn) =>
-  (...args) =>
-    fn(...args).catch(args[2]);
+module.exports.errorWrapper = (fn) => (req, res, next) => fn(req, res).catch(next);

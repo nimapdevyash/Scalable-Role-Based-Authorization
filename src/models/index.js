@@ -5,25 +5,26 @@ const Role = require("./roles.js");
 const { sequelize } = require("../../db/index.js");
 const User = require("./user.js");
 
-// permission to entity (1 : n)
-Permission.hasMany(Entity);
-Entity.belongsTo(Permission);
+// permission to entity ( n : 1)
+Entity.hasMany(Permission, {foreignKey : 'entity'});
+Permission.belongsTo(Entity, {foreignKey : 'entity'});
 
 // role to permission (n : m)
 Role.belongsToMany(Permission, {
   through: RolesPermissions,
-  foreignKey: "permission",
+  foreignKey: "role",
 });
 Permission.belongsToMany(Role, {
   through: RolesPermissions,
-  foreignKey: "role",
+  foreignKey: "permission",
 });
 
 // each user can have only one role
-Role.hasOne(User);
-User.belongsTo(Role);
+Role.hasOne(User , {foreignKey : 'role'});
+User.belongsTo(Role, {foreignKey : 'role'});
 
-sequelize.sync({ force: true });
+sequelize.sync({force : true});
+// sequelize.sync();
 
 module.exports = {
   Role,
