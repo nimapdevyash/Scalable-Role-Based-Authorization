@@ -4,21 +4,18 @@ async function cheackPermission(req, res, next) {
   try {
     const role = req?.user?.role;
 
+    console.log("route.path : ",req.route.path)
+    console.log("base url : ",req.baseUrl)
+
     if (!role) {
       throw new Error("invalid user , role not found");
     }
 
-    const path = req.originalUrl;
-    const sPath = path.split("/");
+    const baseUrl = req.baseUrl;
+    const entityName = baseUrl.split("/")[2];
+    console.log("entityName :" , entityName)
 
-    const entityName = (() => {
-      for (let i = 0; i < sPath.length; i++) {
-        if (sPath[i] === "api") {
-          return sPath[i + 1];
-        }
-      }
-      return "";
-    })();
+    const path = baseUrl + req.route.path ;
 
     const entity = await model.Entity.findOne({
       where : {
@@ -62,6 +59,8 @@ async function cheackPermission(req, res, next) {
         return next() ;
       }
     }
+
+    console.log("hey")
 
     throw new Error("User Does Not Have Permission For This Route");
   } catch (error) {

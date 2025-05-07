@@ -24,9 +24,11 @@ async function createUser(data) {
 }
 
 async function updateUser(data) {
-  if (!data || !data.name) {
+  if (!data || !data.userName) {
     throw new Error("Insufficient Data");
   }
+
+  console.log(data)
 
   const updateCount = await model.User.update(
     {
@@ -34,9 +36,10 @@ async function updateUser(data) {
     },
     {
       where: {
-        name: data.name,
+        name: data.userName.trim(),
+        is_deleted : false
       },
-    }
+    },
   );
 
   if (!updateCount) {
@@ -56,7 +59,7 @@ async function deleteUser(userName) {
     {
       where: {
         is_deleted: false,
-        name: userName,
+        name: userName.trim(),
       },
     }
   );
@@ -73,12 +76,37 @@ async function getUserByName(userName) {
 
   const user = await model.User.findOne({
     where: {
-      name: userName,
+      name: userName.trim(),
     },
+    attributes: ["id", "name", "age", "email", "role"],
+    raw: true,
+    nest: true,
   });
+
+  console.log("user : " , user)
 
   if (!user) {
     throw new Error("user not found");
+  }
+
+  return user;
+}
+
+
+async function getCurrentUser(userId) {
+
+  const user = await model.User.findOne({
+    where: {
+      is_deleted: false,
+      id : userId
+    },
+    attributes : ["id" , "name" , "age" , "email" , "role"],
+    raw : true,
+    nest: true
+  });
+
+  if (!user) {
+    throw new Error("No User Found, Invalid Sessions");
   }
 
   return user;
@@ -110,15 +138,11 @@ async function logInUser(data) {
   }
 
   const user = await model.User.findOne({
-    where: { email },
+    where: { email , password },
   });
 
   if (!user) {
-    throw new Error("No User Exists With This EmailID");
-  }
-
-  if(user.password !== password) {
-    throw new Error("Invalid Password")
+    throw new Error("Invalid Credentials");
   }
 
   const token = jwt.createAcessToken({
@@ -138,4 +162,5 @@ module.exports = {
   updateUser,
   deleteUser,
   logInUser,
+  getCurrentUser
 };

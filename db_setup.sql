@@ -5,6 +5,7 @@
 -- select * from "public"."Permissions" ;
 -- select * from "public"."RolesPermissions" ;
 -- select * from "public"."Roles" ;
+-- select * from "public"."Users" ;
 
 -- we have only two entities as of now, user and auth
 insert into "public"."Entities" ("name" , "createdAt" , "updatedAt")
@@ -12,8 +13,8 @@ values ('user' , now() , now());
 
 -- create permissions for each path of both entities
 insert into "public"."Permissions" ("method" , "path" , "entity" , "createdAt" , "updatedAt")
-values  ('post' , '/api/user' , 1 , now() , now()), -- create user
-		('get' , '/api/user' , 1 , now() , now()), -- get all users
+values  ('post' , '/api/user/' , 1 , now() , now()), -- create user
+		('get' , '/api/user/' , 1 , now() , now()), -- get all users
 		('put' , '/api/user/:userName' , 1 , now() , now()), -- update user
 		('delete' , '/api/user/:userName' , 1 , now() , now()), -- delete user
 		('get' , '/api/user/:userName' , 1 , now() , now()); -- get user by userName
@@ -33,3 +34,4 @@ values  (1 , 1 , now() , now()), -- manager can create user
 		(1 , 5 , now() , now()), -- manager can get a user by it's userName
 		(2 , 1 , now() , now()), -- Developer can create user
 		(2 , 3 , now() , now()); -- Developer can update a user
+

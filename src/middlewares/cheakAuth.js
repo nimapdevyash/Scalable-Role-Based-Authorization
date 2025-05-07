@@ -6,7 +6,7 @@ function cheakAuth(req, res, next) {
     const accessToken = req?.cookies?.accessToken;
 
     if (!accessToken) {
-      next(new Error("AccessToken is Missing or Invalid Access Token"));
+      throw new Error("AccessToken is Missing or Invalid Access Token");
     }
 
     req.user = jwt.verifyAcessToken(accessToken);
