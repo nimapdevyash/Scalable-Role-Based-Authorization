@@ -12,7 +12,6 @@ const Role = sequelize.define("Role" , {
   },
   is_deleted : {
     type : DataTypes.BOOLEAN,
-    allowNull : false,
     defaultValue : false
   }
 } , {

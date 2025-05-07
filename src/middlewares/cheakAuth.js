@@ -9,8 +9,7 @@ function cheakAuth(req, res, next) {
       next(new Error("AccessToken is Missing or Invalid Access Token"));
     }
 
-    const decodedToken = jwt.verifyAcessToken(token);
-    req.user = decodedToken.user;
+    req.user = jwt.verifyAcessToken(accessToken);
 
     next() ;
   } catch (error) {

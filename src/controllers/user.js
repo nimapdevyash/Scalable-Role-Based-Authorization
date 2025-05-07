@@ -38,15 +38,17 @@ module.exports = {
   getAllUsers: {
     method: "get",
     path: "/",
-    handler: async (req, res) =>
-      res.status(200).send(userService.getAllUsers(req?.params)),
+    handler: async (req, res) => {
+      const result = await userService.getAllUsers() ;
+      return res.status(200).send(result)
+    }
   },
 
   logInUser: {
     method: "post",
     path: "/login",
     handler: async (req, res) => {
-      const token = userService.logInUser(req?.body);
+      const token = await userService.logInUser(req?.body);
       return res.status(200).cookie("accessToken", token).json({
         message: "user logged in successfully",
       });

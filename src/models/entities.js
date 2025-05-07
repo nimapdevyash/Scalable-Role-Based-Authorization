@@ -8,7 +8,6 @@ const Entity = sequelize.define("Entity" , {
   },
   is_deleted : {
     type : DataTypes.BOOLEAN,
-    allowNull : false,
     defaultValue : false
   }
 } , {

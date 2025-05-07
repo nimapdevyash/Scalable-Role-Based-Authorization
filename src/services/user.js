@@ -3,7 +3,14 @@ const model = require("../models");
 const jwt = require("./../../utils/jwt");
 
 async function createUser(data) {
-  if (!data || !data.name || !data.age || !(data.age > 18) || !data.password || !data.email) {
+  if (
+    !data ||
+    !data.name ||
+    !data.age ||
+    !(data.age > 18) ||
+    !data.password ||
+    !data.email
+  ) {
     throw new Error("invalid credentials");
   }
 
@@ -21,7 +28,7 @@ async function updateUser(data) {
     throw new Error("Insufficient Data");
   }
 
-  const updateCount = await User.update(
+  const updateCount = await model.User.update(
     {
       ...data,
     },
@@ -42,7 +49,7 @@ async function deleteUser(userName) {
     throw new Error("userName is Required");
   }
 
-  const updateCount = await User.update(
+  const updateCount = await model.User.update(
     {
       is_deleted: true,
     },
@@ -64,7 +71,7 @@ async function getUserByName(userName) {
     throw new Error("Users Name is Required");
   }
 
-  const user = await User.findOne({
+  const user = await model.User.findOne({
     where: {
       name: userName,
     },
@@ -77,13 +84,15 @@ async function getUserByName(userName) {
   return user;
 }
 
-async function getAllUsers(params) {
-  const users = await User.findAll({
+async function getAllUsers() {
+
+  const users = await model.User.findAll({
     where: {
-      age: {
-        [Op.lte]: params.age,
-      },
+      is_deleted: false,
     },
+    attributes : ["id" , "name" , "age" , "email" , "role"],
+    raw : true,
+    nest: true
   });
 
   if (!users) {
@@ -94,24 +103,33 @@ async function getAllUsers(params) {
 }
 
 async function logInUser(data) {
-  const {email , password} = data ;
+  const { email, password } = data;
 
-  if(!email || !password) {
-    throw new Error(" Both Email And Password Are Required") ;
+  if (!email || !password) {
+    throw new Error(" Both Email And Password Are Required");
   }
 
-  const user = await User.findOne({where : email , attributes : [ "email" , "role" , "name"]}) ;
+  const user = await model.User.findOne({
+    where: { email },
+  });
 
-  if(!user) {
-    throw new Error("No User Exists With This EmailID")
+  if (!user) {
+    throw new Error("No User Exists With This EmailID");
   }
 
-  const token = jwt.createAcessToken(user) ;
+  if(user.password !== password) {
+    throw new Error("Invalid Password")
+  }
 
-  return token ;
+  const token = jwt.createAcessToken({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  });
+
+  return token;
 }
-
-async function logOutUser(req) {}
 
 module.exports = {
   createUser,
@@ -120,5 +138,4 @@ module.exports = {
   updateUser,
   deleteUser,
   logInUser,
-  logOutUser,
 };

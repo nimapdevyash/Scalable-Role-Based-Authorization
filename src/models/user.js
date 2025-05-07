@@ -23,6 +23,10 @@ const User = sequelize.define("User" , {
   role : {
     type : DataTypes.INTEGER,
     allowNull : false
+  },
+  is_deleted : {
+    type : DataTypes.BOOLEAN,
+    defaultValue : false
   }
 }, {timestamps : true})
 
